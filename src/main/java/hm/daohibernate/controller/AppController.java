@@ -3,6 +3,7 @@ package hm.daohibernate.controller;
 import hm.daohibernate.domain.Persons;
 import hm.daohibernate.repository.AppRepository;
 import lombok.RequiredArgsConstructor;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,22 +15,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/persons")
-@RequiredArgsConstructor
 public class AppController {
 
-    @Autowired
-    private AppRepository appRepository;
+    private final AppRepository appRepository;
+    private final Flyway flyway;
 
-//    @GetMapping("/create")
-//    public void create(
-//            @RequestParam("name") String name,
-//            @RequestParam("surname") String surname,
-//            @RequestParam("age") int age,
-//            @RequestParam("phoneNumber") String phoneNumber,
-//            @RequestParam("city") String city) {
-//        Persons persons = new Persons(name, surname, age, phoneNumber, city);
-//        appRepository.create(persons);
-//    }
+    @Autowired
+    public AppController(AppRepository appRepository, Flyway flyway) {
+        this.appRepository = appRepository;
+        this.flyway = flyway;
+    }
 
     @PostMapping("/create")
     public void create(@RequestBody Persons persons) {
@@ -39,5 +34,10 @@ public class AppController {
     @GetMapping("/by-city")
     public List<Persons> getPersonsByCity(@RequestParam("city") String city) throws SQLException {
         return appRepository.getPersonsByCity(city);
+    }
+
+    @PostMapping("/migrate")
+    public void migrate() {
+        flyway.migrate();
     }
 }

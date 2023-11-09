@@ -15,7 +15,6 @@ public class AppRepository {
 
     @Transactional
     public void create (Persons persons) {
-
         entityManager.persist(persons);
     }
     @Transactional

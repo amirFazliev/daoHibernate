@@ -1,11 +1,8 @@
 package hm.daohibernate.domain;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
-
-import java.io.Serializable;
 
 @ToString
 @Getter
@@ -13,15 +10,13 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Persons implements Serializable{
+public class Persons {
     @Id
     private String name;
     @Id
     private String surname;
     @Id
     private int age;
-
     private String phoneNumber;
-
     private String city;
 }
