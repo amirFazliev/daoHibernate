@@ -1,27 +1,17 @@
 package hm.daohibernate.repository;
 
 import hm.daohibernate.domain.Persons;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class AppRepository {
-    @PersistenceContext
-    private EntityManager entityManager;
+public interface AppRepository extends JpaRepository<Persons, Long> {
+    List <Persons> findByCity(String city);
 
-    @Transactional
-    public void create (Persons persons) {
+    List<Persons> findByAgeLessThanOrderByAge(int age);
 
-        entityManager.persist(persons);
-    }
-    @Transactional
-    public List<Persons> getPersonsByCity(String city) {
-        var query = entityManager.createQuery("select persons from Persons persons where persons.city=:city", Persons.class);
-        query.setParameter("city", city);
-        return query.getResultList();
-    }
+    Optional<Persons> findByNameAndSurname(String name, String surname);
 }
