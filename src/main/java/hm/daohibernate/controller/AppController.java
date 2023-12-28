@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AppController {
     @Autowired
     private final AppRepository appRepository;
-
+    
     @PostMapping("/create")
     public void create(@RequestBody Persons persons) {
         appRepository.save(persons);
