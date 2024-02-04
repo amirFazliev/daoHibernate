@@ -14,4 +14,6 @@ public interface AppRepository extends JpaRepository<Persons, Long> {
     List<Persons> findByAgeLessThanOrderByAge(int age);
 
     Optional<Persons> findByNameAndSurname(String name, String surname);
+
+    List<Persons> findByUsername(String username);
 }
