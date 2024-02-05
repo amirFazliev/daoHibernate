@@ -2,6 +2,7 @@ package hm.daohibernate.controller;
 
 import hm.daohibernate.domain.Persons;
 import hm.daohibernate.repository.AppRepository;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -21,7 +22,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequestMapping("/persons")
 @RequiredArgsConstructor
 public class AppController {
-    @Autowired
     private final AppRepository appRepository;
 
     @PostMapping("/create")
@@ -37,7 +37,7 @@ public class AppController {
     }
 
     @GetMapping("/by-age")
-    @Secured("ROLE_READ")
+    @RolesAllowed("ROLE_READ")
     public List<Persons> getPersonsByAge(@RequestParam("age") int age) {
         return appRepository.findByAgeLessThanOrderByAge(age);
     }
