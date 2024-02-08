@@ -6,12 +6,10 @@ import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RequestMapping("/persons")
 @RequiredArgsConstructor
 public class AppController {
+    @Autowired
     private final AppRepository appRepository;
 
     @PostMapping("/create")
@@ -49,10 +48,8 @@ public class AppController {
     }
 
     @GetMapping("/by-username")
-    public List<Persons> getPersonsByUsername(@RequestParam("username") String username, Authentication authentication) {
-        if (username.equals(authentication.getName())) {
-            return appRepository.findByUsername(username);
-        }
-        return Collections.emptyList();
+    @PreAuthorize("#username == authentication.name")
+    public List<Persons> getPersonsByUsername(@RequestParam("username") String username) {
+        return appRepository.findByUsername(username);
     }
 }
